@@ -1,0 +1,37 @@
+body {
+  display: flex; }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  margin: auto; }
+
+.slider {
+  display: flex;
+  justify-content: flex-start;
+  width: 2000px;
+  text-align: center; }
+  .slider-container {
+    width: 500px;
+    margin: auto;
+    overflow: hidden; }
+  .slider-item {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 500px; }
+    .slider-item.active-slide {
+      display: flex; }
+    .slider-item:nth-child(1) {
+      background-color: green; }
+    .slider-item:nth-child(2) {
+      background-color: blue; }
+    .slider-item:nth-child(3) {
+      background-color: rebeccapurple; }
+
+.container-button {
+  margin: auto; }
+
+/*# sourceMappingURL=main.css.map */
