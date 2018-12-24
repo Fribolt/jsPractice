@@ -7,4 +7,9 @@ header {
     font-size: 36px;
     color: aqua; }
 
+.changed-date {
+  display: flex; }
+  .changed-date .period-date {
+    margin: 0 20px; }
+
 /*# sourceMappingURL=main.css.map */
