@@ -1,9 +1,9 @@
-let counter = 0;
 let selectDate = new Date();
+let modifyDate = new Date();
 const dateNow = new Date();
-const currentDate = document.querySelector('#current-date');
-const modifyDate = document.querySelector('#modify-date');
-const differenceDate1 = document.querySelector('#difference-date');
+const currentDateElement = document.querySelector('#current-date');
+const modifyDateElement = document.querySelector('#modify-date');
+const differenceDateElement = document.querySelector('#difference-date');
 const select = document.querySelector('#select-date');
 const changeDateButton = document.querySelector('#change-date');
 const compareDateButton = document.querySelector('#compare-date');
@@ -16,6 +16,7 @@ const dateOptions = {
     minute: 'numeric',
     second: 'numeric'
 };
+
 const intervals = {
     halfHour: 1800000,
     hour: 3600000,
@@ -23,72 +24,70 @@ const intervals = {
     week: 604800000,
     halfMonth: 1296000000,
 };
-const setDate = {
-    halfHour: {
-        title: 'Half an Hour',
+
+const optionsList = [
+    {
+        name: 'Half an Hour',
         date: intervals.halfHour,
     },
-    hour: {
-        title: 'Hour',
+    {
+        name: 'Hour',
         date: intervals.hour,
     },
-    day: {
-        title: 'Day',
+    {
+        name: 'Day',
         date: intervals.day,
     },
-    week: {
-        title: 'Week',
+    {
+        name: 'Week',
         date: intervals.week,
     },
-    halfMonth: {
-        title: 'Half an Month',
+    {
+        name: 'Half an Month',
         date: intervals.halfMonth,
     },
-};
+];
 
-currentDate.innerHTML = dateNow.toLocaleDateString('ru', dateOptions);
+currentDateElement.innerHTML = dateNow.toLocaleDateString('ru', dateOptions);
 
-const getValue = () => select.value;
-
-const calculateDate = () => selectDate = +selectDate + +getValue();
-
+const getSelectedDate = () => select.value;
+const calculateModifyDate = () => selectDate = +selectDate + +getSelectedDate();
 const showModifyDate = () => {
-    modifyDate.innerHTML = new Date(calculateDate()).toLocaleDateString('ru', dateOptions);
+    modifyDate = new Date(calculateModifyDate());
+    modifyDateElement.innerHTML = modifyDate.toLocaleDateString('ru', dateOptions);
 };
 
-const setOptions = (title) => {
-    let select = document.querySelector('#select-date');
-    let option = document.createElement('option');
+const convertToDay = (milliseconds) => milliseconds / 1000 / 60 / 60 / 24;
+const convertToHour = (milliseconds) => milliseconds / 1000 / 60 / 60;
+const convertToMinute = (hours) => hours * 6;
 
-    option.innerText = title;
-    option.classList.add('option');
-    select.appendChild(option);
+const getDifferenceDate = () => +modifyDate - +dateNow;
+
+const showDifferenceDate = () => {
+    let differenceDateArray = (" " + convertToDay(getDifferenceDate())).split(".");
+
+    differenceDateElement.innerHTML = differenceDateArray[1];
+    // let differenceDateMilliseconds = selectDate - dateNow;
+    // let differenceDateArray = (" " + convertToHour(differenceDateMilliseconds)).split(".");
+    // let remainderHour = differenceDateToArray[1];
+    //
+    // if (remainderHour) {
+    //     differenceDate.innerHTML = `Разница часов: ${differenceDateToArray[0]}, минут ${convertToMinute(+remainderHour)}`;
+    // } else {
+    //     differenceDate.innerHTML = `Разница в часах: ${convertToHour(differenceDateMilliseconds)}`;
+    // }
 };
 
-const setAttribute = (date) => {
-    let options = document.querySelectorAll('.option');
-    options[counter].setAttribute('value', date);
-    counter++;
+const createOptions = () => {
+    optionsList.forEach((item) => {
+        let option = document.createElement('option');
+        option.innerText = item.name;
+        option.setAttribute('value', item.date);
+        select.appendChild(option);
+    });
 };
 
-for (let key in setDate) {
-    for (let key1 in setDate[key]) {
-        if (typeof setDate[key][key1] == "string") {
-            setOptions(setDate[key][key1]);
-        }
-    }
-}
-
-for (let key in setDate) {
-    for (let key1 in setDate[key]) {
-        if (typeof setDate[key][key1] == "number") {
-            setAttribute(setDate[key][key1]);
-        }
-    }
-}
+createOptions();
 
 changeDateButton.addEventListener('click', showModifyDate);
-compareDateButton.addEventListener('click', function () {
-    let differenceDate = selectDate - dateNow;
-    differenceDate1.innerHTML = `Разница в часах: ${differenceDate / 1000 / 60 / 60}`;
-});
+compareDateButton.addEventListener('click', showDifferenceDate);
