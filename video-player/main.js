@@ -5,17 +5,14 @@ const rewindButton =  document.querySelector('#rewind-button');
 const progressBar =  document.querySelector('#progress-bar');
 let longVideo = null;
 
-
-videoElement.addEventListener('onload', () => console.log(longVideo));
-playButton.addEventListener('click', () => videoElement.play());
-pauseButton.addEventListener('click', () => videoElement.pause());
-rewindButton.addEventListener('click', () => videoElement.currentTime = 3);
-videoElement.addEventListener('timeupdate', () => {
-    progressBar.value = videoElement.currentTime;
-});
-
-videoElement.addEventListener('loadedmetadata',() => {
+const initVideoParameters = () => {
     longVideo = videoElement.duration;
     progressBar.setAttribute('step',longVideo * 1 / 100);
     progressBar.setAttribute('max', longVideo);
-});
+};
+
+videoElement.addEventListener('loadedmetadata',initVideoParameters);
+playButton.addEventListener('click', () => videoElement.play());
+pauseButton.addEventListener('click', () => videoElement.pause());
+rewindButton.addEventListener('click', () => videoElement.currentTime = longVideo / 2);
+videoElement.addEventListener('timeupdate', () => progressBar.value = videoElement.currentTime);
